@@ -168,7 +168,7 @@ if __name__ == '__main__':
                         help='Directory for storing input data')
 
     #添加下面3句，使可以在GPU运行,还需要import argparse 、from os import environ
-    parser.add_argument('-g', '--gpu', nargs=1,
+    '''parser.add_argument('-g', '--gpu', nargs=1,
                         choices=[0, 1], type=int, metavar='',
                         help="Run single-gpu version."
                              "Choose the GPU from: {!s}".format([0, 1]))
@@ -176,6 +176,6 @@ if __name__ == '__main__':
     if args.gpu:
         environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu[0])
         mode_ = 'single-gpu'
-
+    '''
     FLAGS, unparsed = parser.parse_known_args()
     tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)

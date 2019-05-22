@@ -163,7 +163,7 @@ def main(_):
             train_step.run(feed_dict={x: this_imgs, y_: this_labels, keep_prob: 0.5})
 
         print('test accuracy %g' % accuracy.eval(feed_dict={
-            x: valid_imgs, y_: valid_labels, keep_prob: 1.0}))
+            x: test_imgs, y_: test_labels, keep_prob: 1.0}))
 
 
 if __name__ == '__main__':

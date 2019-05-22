@@ -111,6 +111,7 @@ def main(_):
     '''
     train_imgs = load_pkls(save_path, 'x_train')
     train_labels = load_pkls(save_path, 'y_train')
+    print(train_labels.shape[0])
     valid_imgs =  load_pkls(save_path, 'x_valid')
     valid_labels =  load_pkls(save_path, 'y_valid')
     test_imgs =  load_pkls(save_path, 'x_test')

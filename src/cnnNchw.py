@@ -147,10 +147,10 @@ def main(_):
         sess.run(tf.global_variables_initializer())
         for i in range(100000): #训练图片的数量
             #手动batch
-            this_imgs = train_imgs[:100]
-            train_imgs = train_imgs[100:]
-            this_labels = train_labels[:100]
-            train_labels = train_labels[100:]
+            this_imgs = train_imgs[:128]
+            train_imgs = train_imgs[128:]
+            this_labels = train_labels[:128]
+            train_labels = train_labels[128:]
 
             if i % 1000 == 0:
                 train_accuracy = accuracy.eval(feed_dict={

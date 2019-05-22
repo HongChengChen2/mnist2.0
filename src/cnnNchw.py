@@ -145,11 +145,12 @@ def main(_):
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        for i in range(10000): #训练图片的数量
-            this_imgs = train_imgs[:50]
-            train_imgs = train_imgs[50:]
-            this_labels = train_labels[:50]
-            train_labels = train_labels[50:]
+        for i in range(100000): #训练图片的数量
+            #手动batch
+            this_imgs = train_imgs[:64]
+            train_imgs = train_imgs[64:]
+            this_labels = train_labels[:64]
+            train_labels = train_labels[64:]
 
             if i % 1000 == 0:
                 train_accuracy = accuracy.eval(feed_dict={
@@ -168,7 +169,7 @@ if __name__ == '__main__':
                         help='Directory for storing input data')
 
     #添加下面3句，使可以在GPU运行,还需要import argparse 、from os import environ
-    '''parser.add_argument('-g', '--gpu', nargs=1,
+    parser.add_argument('-g', '--gpu', nargs=1,
                         choices=[0, 1], type=int, metavar='',
                         help="Run single-gpu version."
                              "Choose the GPU from: {!s}".format([0, 1]))
@@ -176,6 +177,6 @@ if __name__ == '__main__':
     if args.gpu:
         environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu[0])
         mode_ = 'single-gpu'
-    '''
+
     FLAGS, unparsed = parser.parse_known_args()
     tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)

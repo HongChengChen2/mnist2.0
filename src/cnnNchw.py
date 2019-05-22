@@ -111,11 +111,14 @@ def main(_):
     '''
     train_imgs = load_pkls(save_path, 'x_train')
     train_labels = load_pkls(save_path, 'y_train')
-    print(train_labels.shape[0])
+    print("train:" + train_labels.shape[0])
     valid_imgs =  load_pkls(save_path, 'x_valid')
     valid_labels =  load_pkls(save_path, 'y_valid')
+    print("valid:" + valid_labels.shape[0])
     test_imgs =  load_pkls(save_path, 'x_test')
     test_labels =  load_pkls(save_path, 'y_test')
+    print("test:" + test_labels.shape[0])
+
 
     # Create the model
     # 声明一个占位符，None表示输入图片的数量不定，28*28图片分辨率
@@ -160,7 +163,7 @@ def main(_):
             train_step.run(feed_dict={x: this_imgs, y_: this_labels, keep_prob: 0.5})
 
         print('test accuracy %g' % accuracy.eval(feed_dict={
-            x: test_imgs, y_: test_labels, keep_prob: 1.0}))
+            x: valid_imgs, y_: valid_labels, keep_prob: 1.0}))
 
 
 if __name__ == '__main__':

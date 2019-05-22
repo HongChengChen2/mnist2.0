@@ -71,8 +71,8 @@ def deepnn(x):
 
     ## 第四层输出操作 ##
     with tf.name_scope('fc2'):
-        W_fc2 = weight_variable([1024, 10])
-        b_fc2 = bias_variable([10])
+        W_fc2 = weight_variable([1024, 90])
+        b_fc2 = bias_variable([90])
         y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
     return y_conv, keep_prob
 

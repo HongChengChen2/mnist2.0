@@ -317,7 +317,8 @@ if __C.VERSION is None:
   __C.VERSION = _auto_version(__C)
 
 # Source data directory path
-__C.SOURCE_DATA_PATH = '../data/source_data'
+# __C.SOURCE_DATA_PATH = '../data/source_data'
+__C.SOURCE_DATA_PATH = '/home/leander/Leander/capsule-tf/data/'
 
 # Preprocessed data path
 __C.DPP_DATA_PATH = '../data/preprocessed_data'

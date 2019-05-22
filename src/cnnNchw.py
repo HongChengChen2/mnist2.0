@@ -145,7 +145,7 @@ def main(_):
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        for i in range(100000): #训练图片的数量
+        for i in range(15000): #训练图片的数量
             this_imgs = train_imgs[:50]
             train_imgs = train_imgs[50:]
             this_labels = train_labels[:50]

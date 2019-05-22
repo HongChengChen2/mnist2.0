@@ -111,13 +111,13 @@ def main(_):
     '''
     train_imgs = load_pkls(save_path, 'x_train')
     train_labels = load_pkls(save_path, 'y_train')
-    print("train:" + train_labels.shape[0])
+    print("train:" , train_labels.shape[0])
     valid_imgs =  load_pkls(save_path, 'x_valid')
     valid_labels =  load_pkls(save_path, 'y_valid')
-    print("valid:" + valid_labels.shape[0])
+    print("valid:", valid_labels.shape[0])
     test_imgs =  load_pkls(save_path, 'x_test')
     test_labels =  load_pkls(save_path, 'y_test')
-    print("test:" + test_labels.shape[0])
+    print("test:" , test_labels.shape[0])
 
 
     # Create the model

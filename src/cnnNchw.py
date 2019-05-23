@@ -116,13 +116,13 @@ def main(_):
     '''
     train_imgs = load_pkls(save_path, 'x_train')
     train_labels = load_pkls(save_path, 'y_train')
-    train = tf.train.slice_input_producer([train_imgs,train_labels])
+    #train = tf.train.slice_input_producer([train_imgs,train_labels],shuffle=True)
     valid_imgs =  load_pkls(save_path, 'x_valid')
     valid_labels =  load_pkls(save_path, 'y_valid')
-    #valid = tf.train.slice_input_producer([valid_imgs,valid_labels])
+    valid = tf.train.slice_input_producer([valid_imgs,valid_labels],shuffle=True)
     test_imgs =  load_pkls(save_path, 'x_test')
     test_labels =  load_pkls(save_path, 'y_test')
-    #test = tf.train.slice_input_producer([test_imgs,test_labels])
+    #test = tf.train.slice_input_producer([test_imgs,test_labels],shuffle=True)
 
 
     # Create the model

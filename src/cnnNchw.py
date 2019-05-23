@@ -160,8 +160,8 @@ def main(_):
             this_labels = train_labels[:50]
             train_labels = train_labels[50:]
             '''
-            this_imgs, this_labels = tf.train.batch(train, batch_size=50)
-            this_imgs, this_labels = sess.run(this_imgs, this_labels)
+            this_imgs0, this_labels0 = tf.train.batch(train, batch_size=50)
+            this_imgs, this_labels = sess.run([this_imgs0, this_labels0])
 
             if i % 100 == 0:
                 train_accuracy = accuracy.eval(feed_dict={

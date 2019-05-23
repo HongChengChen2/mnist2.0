@@ -64,7 +64,7 @@ def deepnn(x):
         h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
         h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
-    #drop防止过拟合
+    #drop防止过拟合 keep_prob:每个元素被保留的概率
     with tf.name_scope('dropout'):
         keep_prob = tf.placeholder(tf.float32)
         h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
@@ -98,6 +98,8 @@ def bias_variable(shape):
     initial = tf.constant(0.1, shape=shape)
     return tf.Variable(initial)
 
+#def get_batch():
+
 def main(_):
     # Import data
     #mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
@@ -108,16 +110,19 @@ def main(_):
     test_labels = load_pkls(save_path, 'test_labels')
     test_imgs = load_pkls(save_path, 'test_images')
     
+    print("valid:", valid_labels.shape[0])
+    
+    #图片数量：train:445000 valid:5000 test:90000 
     '''
     train_imgs = load_pkls(save_path, 'x_train')
     train_labels = load_pkls(save_path, 'y_train')
-    print("train:" , train_labels.shape[0])
     valid_imgs =  load_pkls(save_path, 'x_valid')
     valid_labels =  load_pkls(save_path, 'y_valid')
-    print("valid:", valid_labels.shape[0])
     test_imgs =  load_pkls(save_path, 'x_test')
     test_labels =  load_pkls(save_path, 'y_test')
-    print("test:" , test_labels.shape[0])
+    train = tf.train.slice_input_producer([train_imgs,train_labels])
+    valid = tf.train.slice_input_producer([valid_imgs,valid_labels])
+    test = tf.train.slice_input_producer([test_imgs,test_labels])
 
 
     # Create the model
@@ -151,19 +156,22 @@ def main(_):
         sess.run(tf.global_variables_initializer())
         for i in range(8900): #训练图片的数量
             #手动batch
+            '''
             this_imgs = train_imgs[:50]
             train_imgs = train_imgs[50:]
             this_labels = train_labels[:50]
             train_labels = train_labels[50:]
+            '''
+            batch = tf.train.batch(train, batch_size=50)
 
             if i % 100 == 0:
                 train_accuracy = accuracy.eval(feed_dict={
                     x: this_imgs, y_: this_labels, keep_prob: 1.0})
                 print('step %d, training accuracy %g' % (i, train_accuracy))
-            train_step.run(feed_dict={x: this_imgs, y_: this_labels, keep_prob: 0.5})
+            train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 
         print('test accuracy %g' % accuracy.eval(feed_dict={
-            x: test_imgs, y_: test_labels, keep_prob: 1.0}))
+            x: valid_imgs, y_: valid_labels, keep_prob: 1.0}))
 
 
 if __name__ == '__main__':

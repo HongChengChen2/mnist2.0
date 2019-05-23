@@ -121,9 +121,9 @@ def main(_):
     test_imgs =  load_pkls(save_path, 'x_test')
     test_labels =  load_pkls(save_path, 'y_test')
     #test = tf.train.slice_input_producer([test_imgs,test_labels],shuffle=True)
-
-    f = open("result.txt", "a")
-    print('yes', file=f)
+    print("This is ok 1")
+    #f = open("result.txt", "a")
+    #print('yes', file=f)
 
 
     # Create the model
@@ -134,6 +134,7 @@ def main(_):
     y_ = tf.placeholder(tf.float32, [None, 90])
 
     y_conv, keep_prob = deepnn(x)
+    print("This is ok 2")
 
     with tf.name_scope('loss'):
         cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_,
@@ -147,9 +148,10 @@ def main(_):
         correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
         correct_prediction = tf.cast(correct_prediction, tf.float32)
     accuracy = tf.reduce_mean(correct_prediction)
+    print("This is ok 3")
 
     graph_location = tempfile.mkdtemp()
-    print('Saving graph to: %s' % graph_location ,file=f )
+    print('Saving graph to: %s' % graph_location )
     train_writer = tf.summary.FileWriter(graph_location)
     train_writer.add_graph(tf.get_default_graph())
 
@@ -163,17 +165,19 @@ def main(_):
             this_labels = train_labels[:50]
             train_labels = train_labels[50:]
             '''
+            print("This is ok 4")
             this_imgs0, this_labels0 = tf.train.batch(train, batch_size=50)
+            print("This is ok 5")
             this_imgs, this_labels = sess.run([this_imgs0, this_labels0])
 
             if i % 100 == 0:
                 train_accuracy = accuracy.eval(feed_dict={
                     x: this_imgs, y_: this_labels, keep_prob: 1.0})
-                print('step %d, training accuracy %g' % (i, train_accuracy), file=f)
+                print('step %d, training accuracy %g' % (i, train_accuracy))
             train_step.run(feed_dict={x: this_imgs, y_: this_labels, keep_prob: 0.5})
 
         print('test accuracy %g' % accuracy.eval(feed_dict={
-            x: valid_imgs, y_: valid_labels, keep_prob: 1.0}), file=f)
+            x: valid_imgs, y_: valid_labels, keep_prob: 1.0}))
 
 
 if __name__ == '__main__':

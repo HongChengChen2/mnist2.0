@@ -122,6 +122,9 @@ def main(_):
     test_labels =  load_pkls(save_path, 'y_test')
     #test = tf.train.slice_input_producer([test_imgs,test_labels],shuffle=True)
 
+    f = open("result.txt", "a")
+    print('yes', file=f)
+
 
     # Create the model
     # 声明一个占位符，None表示输入图片的数量不定，28*28图片分辨率
@@ -146,7 +149,7 @@ def main(_):
     accuracy = tf.reduce_mean(correct_prediction)
 
     graph_location = tempfile.mkdtemp()
-    print('Saving graph to: %s' % graph_location)
+    print('Saving graph to: %s' % graph_location ,file=f )
     train_writer = tf.summary.FileWriter(graph_location)
     train_writer.add_graph(tf.get_default_graph())
 
@@ -166,11 +169,11 @@ def main(_):
             if i % 100 == 0:
                 train_accuracy = accuracy.eval(feed_dict={
                     x: this_imgs, y_: this_labels, keep_prob: 1.0})
-                print('step %d, training accuracy %g' % (i, train_accuracy))
+                print('step %d, training accuracy %g' % (i, train_accuracy), file=f)
             train_step.run(feed_dict={x: this_imgs, y_: this_labels, keep_prob: 0.5})
 
         print('test accuracy %g' % accuracy.eval(feed_dict={
-            x: valid_imgs, y_: valid_labels, keep_prob: 1.0}))
+            x: valid_imgs, y_: valid_labels, keep_prob: 1.0}), file=f)
 
 
 if __name__ == '__main__':

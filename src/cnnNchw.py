@@ -116,10 +116,10 @@ def main(_):
     '''
     train_imgs = load_pkls(save_path, 'x_train')
     train_labels = load_pkls(save_path, 'y_train')
-    #train = tf.train.slice_input_producer([train_imgs,train_labels],shuffle=True)
+    train = tf.train.slice_input_producer([train_imgs,train_labels],shuffle=True)
     valid_imgs =  load_pkls(save_path, 'x_valid')
     valid_labels =  load_pkls(save_path, 'y_valid')
-    valid = tf.train.slice_input_producer([valid_imgs,valid_labels],shuffle=True)
+    #valid = tf.train.slice_input_producer([valid_imgs,valid_labels],shuffle=True)
     test_imgs =  load_pkls(save_path, 'x_test')
     test_labels =  load_pkls(save_path, 'y_test')
     #test = tf.train.slice_input_producer([test_imgs,test_labels],shuffle=True)
@@ -166,7 +166,7 @@ def main(_):
 
             if i % 100 == 0:
                 train_accuracy = accuracy.eval(feed_dict={
-                    x: this_imgs, y_: this_labels, keep_prob: 1.0})
+                    x: batch[0], y_: batch[1], keep_prob: 1.0})
                 print('step %d, training accuracy %g' % (i, train_accuracy))
             train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 

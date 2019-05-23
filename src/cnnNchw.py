@@ -98,8 +98,6 @@ def bias_variable(shape):
     initial = tf.constant(0.1, shape=shape)
     return tf.Variable(initial)
 
-#def get_batch():
-
 def main(_):
     # Import data
     #mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
@@ -162,13 +160,13 @@ def main(_):
             this_labels = train_labels[:50]
             train_labels = train_labels[50:]
             '''
-            batch = tf.train.batch(train, batch_size=50)
+            this_imgs, this_labels = tf.train.batch(train, batch_size=50)
 
             if i % 100 == 0:
                 train_accuracy = accuracy.eval(feed_dict={
-                    x: batch[0], y_: batch[1], keep_prob: 1.0})
+                    x: this_imgs, y_: this_labels, keep_prob: 1.0})
                 print('step %d, training accuracy %g' % (i, train_accuracy))
-            train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+            train_step.run(feed_dict={x: this_imgs, y_: this_labels, keep_prob: 0.5})
 
         print('test accuracy %g' % accuracy.eval(feed_dict={
             x: valid_imgs, y_: valid_labels, keep_prob: 1.0}))

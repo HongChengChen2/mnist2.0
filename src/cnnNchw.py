@@ -166,9 +166,10 @@ def main(_):
             train_labels = train_labels[50:]
             '''
             print("This is ok 4") #ok 之后就不行了
-            batch = tf.train.batch(train, batch_size=50)
+            batch0 = tf.train.batch(train, batch_size=50)
             print("This is ok 5")
-            batch = sess.run(batch)
+            batch = np.ndarray(batch0)
+            #batch = sess.run(batch)
 
             if i % 100 == 0:
                 train_accuracy = accuracy.eval(feed_dict={

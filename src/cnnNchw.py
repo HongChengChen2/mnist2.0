@@ -165,16 +165,16 @@ def main(_):
             this_labels = train_labels[:50]
             train_labels = train_labels[50:]
             '''
-            print("This is ok 4")
-            this_imgs0, this_labels0 = tf.train.batch(train, batch_size=50)
+            print("This is ok 4") #ok 之后就不行了
+            batch = tf.train.batch(train, batch_size=50)
             print("This is ok 5")
-            this_imgs, this_labels = sess.run([this_imgs0, this_labels0])
+            batch = sess.run(batch)
 
             if i % 100 == 0:
                 train_accuracy = accuracy.eval(feed_dict={
-                    x: this_imgs, y_: this_labels, keep_prob: 1.0})
+                    x: batch[0], y_: batch[1], keep_prob: 1.0})
                 print('step %d, training accuracy %g' % (i, train_accuracy))
-            train_step.run(feed_dict={x: this_imgs, y_: this_labels, keep_prob: 0.5})
+            train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
 
         print('test accuracy %g' % accuracy.eval(feed_dict={
             x: valid_imgs, y_: valid_labels, keep_prob: 1.0}))

@@ -117,7 +117,7 @@ def main(_):
     '''
     train_imgs = load_pkls(save_path, 'x_train')
     train_labels = load_pkls(save_path, 'y_train')
-    train = tf.train.slice_input_producer([train_imgs,train_labels],shuffle=False)
+    train = tf.train.slice_input_producer([train_imgs, train_labels], shuffle=True)
     image_batch, label_batch = tf.train.batch(train, batch_size=50)
     valid_imgs =  load_pkls(save_path, 'x_valid')
     valid_labels =  load_pkls(save_path, 'y_valid')
@@ -174,19 +174,19 @@ def main(_):
             this_labels = train_labels[:50]
             train_labels = train_labels[50:]
             '''
-            print("This is ok 5") #ok 之后就不行了
             image_batch_v, label_batch_v = sess.run([image_batch, label_batch])
-            #batch = sess.run(batch)
-            print("This is ok 6")
 
             if i % 100 == 0:
                 train_accuracy = accuracy.eval(feed_dict={
                     x: image_batch_v, y_: label_batch_v, keep_prob: 1.0})
                 print('step %d, training accuracy %g' % (i, train_accuracy))
-            train_step.run(feed_dict={x: image_batch_v, y_: label_batch_v, keep_prob: 0.5})
+            train_step.run(feed_dict={x: image_batch_v, y_: label_batch_v, keep_prob: 0.4})
 
         print('test accuracy %g' % accuracy.eval(feed_dict={
             x: valid_imgs, y_: valid_labels, keep_prob: 1.0}))
+
+        coord.request_stop()
+        coord.join(thread)
 
 
 if __name__ == '__main__':

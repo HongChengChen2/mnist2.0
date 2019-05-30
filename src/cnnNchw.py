@@ -180,7 +180,7 @@ def main(_):
                 train_accuracy = accuracy.eval(feed_dict={
                     x: image_batch_v, y_: label_batch_v, keep_prob: 1.0})
                 print('step %d, training accuracy %g' % (i, train_accuracy))
-            train_step.run(feed_dict={x: image_batch_v, y_: label_batch_v, keep_prob: 0.5})
+            train_step.run(feed_dict={x: image_batch_v, y_: label_batch_v, keep_prob: 0.8})
 
         print('test accuracy %g' % accuracy.eval(feed_dict={
             x: valid_imgs, y_: valid_labels, keep_prob: 1.0}))

@@ -118,6 +118,7 @@ def main(_):
     train_imgs = load_pkls(save_path, 'x_train')
     train_labels = load_pkls(save_path, 'y_train')
     train = tf.train.slice_input_producer([train_imgs,train_labels],shuffle=False)
+    image_batch, label_batch = tf.train.batch(train, batch_size=50)
     valid_imgs =  load_pkls(save_path, 'x_valid')
     valid_labels =  load_pkls(save_path, 'y_valid')
     #valid = tf.train.slice_input_producer([valid_imgs,valid_labels],shuffle=True)
@@ -160,7 +161,8 @@ def main(_):
     train_writer.add_graph(tf.get_default_graph())
 
     with tf.Session() as sess:
-        sess.run(tf.global_variables_initializer())
+        init = tf.global_variables_initializer()
+        sess.run(init)
         coord = tf.train.Coordinator()
         thread = tf.train.start_queue_runners(sess, coord)
 
@@ -172,8 +174,6 @@ def main(_):
             this_labels = train_labels[:50]
             train_labels = train_labels[50:]
             '''
-            print("This is ok 4") #ok 之后就不行了
-            image_batch, label_batch = tf.train.batch(train, batch_size=50)
             print("This is ok 5") #ok 之后就不行了
             image_batch_v, label_batch_v = sess.run([image_batch, label_batch])
             #batch = sess.run(batch)

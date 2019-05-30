@@ -161,6 +161,9 @@ def main(_):
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
+        coord = tf.train.Coordinator()
+        thread = tf.train.start_queue_runners(sess, coord)
+
         for i in range(8900): #训练图片的数量
             #手动batch
             '''
@@ -169,9 +172,9 @@ def main(_):
             this_labels = train_labels[:50]
             train_labels = train_labels[50:]
             '''
-            #改成现在这样之后 ok4也没了
             print("This is ok 4") #ok 之后就不行了
             image_batch, label_batch = tf.train.batch(train, batch_size=50)
+            print("This is ok 5") #ok 之后就不行了
             image_batch_v, label_batch_v = sess.run([image_batch, label_batch])
             #batch = sess.run(batch)
             print("This is ok 6")

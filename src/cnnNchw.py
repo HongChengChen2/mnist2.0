@@ -27,7 +27,8 @@ def deepnn(x):
 
     ## 第一层卷积操作 ##
     with tf.name_scope('conv1'):
-
+        # 卷积核1：patch=5×5;in size 1;out size 32;激活函数reLU非线性处理
+        # 28*28*1 第一次卷积后 28*28*32 再经过池化步长是2 14*14*32
         #定义一个tensor来保存shape为[5,5,1,32]权重矩阵W：前两个参数是窗口的大小，
         # 第三个参数是channel的数量。最后一个定义了我们想使用多少个特征。更进一步，还需要为每一个权重矩阵定义bias
         W_conv1 = weight_variable([5, 5, 1, 32])
@@ -43,7 +44,7 @@ def deepnn(x):
         h_pool1 = max_pool_2x2(h_conv1)
         print(h_pool1.get_shape().as_list())
 
-    # Second convolutional layer -- maps 32 feature maps to 64.
+    # Second convolutional layer -- maps 32 feature maps to 64.（14*14*64 -- 7*7*64）
     ## 第二层卷积操作 ##
     with tf.name_scope('conv2'):
         W_conv2 = weight_variable([5, 5, 32, 64])
@@ -57,7 +58,7 @@ def deepnn(x):
     with tf.name_scope('pool2'):
         h_pool2 = max_pool_2x2(h_conv2)
 
-    ## 第三层全连接操作 ##
+    ## 第三层全连接操作 有1024个神经元 ##
     with tf.name_scope('fc1'):
         W_fc1 = weight_variable([7 * 7 * 64, 1024])
         b_fc1 = bias_variable([1024])
@@ -90,6 +91,8 @@ def max_pool_2x2(x):
 
 
 def weight_variable(shape):
+    # 产生随机变量
+    # truncated_normal：选取位于正态分布均值=0.1附近的随机值
     initial = tf.truncated_normal(shape, stddev=0.1)
     return tf.Variable(initial)
 
@@ -114,7 +117,7 @@ def main(_):
     '''
     train_imgs = load_pkls(save_path, 'x_train')
     train_labels = load_pkls(save_path, 'y_train')
-    train = tf.train.slice_input_producer([train_imgs,train_labels],shuffle=True)
+    train = tf.train.slice_input_producer([train_imgs,train_labels],shuffle=False)
     valid_imgs =  load_pkls(save_path, 'x_valid')
     valid_labels =  load_pkls(save_path, 'y_valid')
     #valid = tf.train.slice_input_producer([valid_imgs,valid_labels],shuffle=True)
@@ -133,6 +136,7 @@ def main(_):
     # 类别y是10-99总共90个类别，对应输出分类结果
     y_ = tf.placeholder(tf.float32, [None, 90])
 
+    #keep_prob是改变参与计算的神经元个数的值
     y_conv, keep_prob = deepnn(x)
     print("This is ok 2")
 
@@ -167,17 +171,16 @@ def main(_):
             '''
             #改成现在这样之后 ok4也没了
             print("This is ok 4") #ok 之后就不行了
-            batch0 = tf.train.batch(train, batch_size=50)
-            print("This is ok 5")
-            batch = np.ndarray(batch0)
+            image_batch, label_batch = tf.train.batch(train, batch_size=50)
+            image_batch_v, label_batch_v = sess.run([image_batch, label_batch])
             #batch = sess.run(batch)
             print("This is ok 6")
 
             if i % 100 == 0:
                 train_accuracy = accuracy.eval(feed_dict={
-                    x: batch[0], y_: batch[1], keep_prob: 1.0})
+                    x: image_batch_v, y_: label_batch_v, keep_prob: 1.0})
                 print('step %d, training accuracy %g' % (i, train_accuracy))
-            train_step.run(feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+            train_step.run(feed_dict={x: image_batch_v, y_: label_batch_v, keep_prob: 0.5})
 
         print('test accuracy %g' % accuracy.eval(feed_dict={
             x: valid_imgs, y_: valid_labels, keep_prob: 1.0}))

@@ -1,7 +1,4 @@
-from importData import Dataset
 import inference
-training = Dataset('wxb_pic/pic', '.jpg')
-testing = Dataset('wxb_pic/pic_test', '.jpg')
 
 save_path = '../data/preprocessed_data/mnist_100'
 train_imgs = load_pkls(save_path, 'x_train')

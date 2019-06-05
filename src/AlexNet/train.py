@@ -1,6 +1,6 @@
 import inference
 
-save_path = '../data/preprocessed_data/mnist_100'
+save_path = '../../data/preprocessed_data/mnist_100'
 train_imgs = load_pkls(save_path, 'x_train')
 train_labels = load_pkls(save_path, 'y_train')
 train = tf.train.slice_input_producer([train_imgs, train_labels], shuffle=True)

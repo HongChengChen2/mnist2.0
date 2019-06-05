@@ -1,5 +1,5 @@
 import inference
-from models.utils import *
+from src.models.utils import *
 
 
 save_path = '../../data/preprocessed_data/mnist_100'

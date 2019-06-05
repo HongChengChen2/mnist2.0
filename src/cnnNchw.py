@@ -139,7 +139,6 @@ def main(_):
 
     #keep_prob是改变参与计算的神经元个数的值
     y_conv, keep_prob = deepnn(x)
-    print("This is ok 2")
 
     with tf.name_scope('loss'):
         cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=y_,

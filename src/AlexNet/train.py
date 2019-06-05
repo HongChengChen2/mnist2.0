@@ -3,18 +3,26 @@ import inference
 training = Dataset('wxb_pic/pic', '.jpg')
 testing = Dataset('wxb_pic/pic_test', '.jpg')
 
+save_path = '../data/preprocessed_data/mnist_100'
+train_imgs = load_pkls(save_path, 'x_train')
+train_labels = load_pkls(save_path, 'y_train')
+train = tf.train.slice_input_producer([train_imgs, train_labels], shuffle=True)
+image_batch, label_batch = tf.train.batch(train, batch_size=50)
+valid_imgs = load_pkls(save_path, 'x_valid')
+valid_labels = load_pkls(save_path, 'y_valid')
+
 import tensorflow as tf
 
 # Parameters
 learn_rate = 0.001
 decay_rate = 0.1
-batch_size = 64
-display_step = 20
+batch_size = 50
+display_step = 100
 
-n_classes = training.num_labels # we got mad kanji
+n_classes = 90 # we got mad kanji
 dropout = 0.8 # Dropout, probability to keep units
-imagesize = 227
-img_channel = 3
+imagesize = 28
+img_channel = 1
 
 x = tf.placeholder(tf.float32, [None, imagesize, imagesize, img_channel])
 y = tf.placeholder(tf.float32, [None, n_classes])
@@ -42,12 +50,12 @@ with tf.Session() as sess:
     sess.run(init)
     step = 1
     while step < 3000:
-        batch_ys, batch_xs = training.nextBatch(batch_size)
+        image_batch_v, label_batch_v = sess.run([image_batch, label_batch])
 
-        sess.run(optimizer, feed_dict={x: batch_xs, y: batch_ys, keep_prob: dropout})
+        sess.run(optimizer, feed_dict={x: image_batch_v, y: label_batch_v, keep_prob: dropout})
         if step % display_step == 0:
-            acc = sess.run(accuracy, feed_dict={x: batch_xs, y: batch_ys, keep_prob: 1.})
-            loss = sess.run(cost, feed_dict={x: batch_xs, y: batch_ys, keep_prob: 1.})
+            acc = sess.run(accuracy, feed_dict={x: image_batch_v, y: label_batch_v, keep_prob: 1.})
+            loss = sess.run(cost, feed_dict={x: image_batch_v, y: label_batch_v, keep_prob: 1.})
             rate = sess.run(lr)
             print ("lr " + str(rate) + " Iter " + str(step) + ", Minibatch Loss= " + "{:.6f}".format(loss) + ", Training Accuracy= " + "{:.5f}".format(acc))
 
@@ -55,8 +63,5 @@ with tf.Session() as sess:
             saver.save(sess, 'save/model.ckpt', global_step=step*batch_size)
         step += 1
     print ("Optimization Finished!")
-    step_test = 1
-    while step_test * batch_size < len(testing):
-        testing_ys, testing_xs = testing.nextBatch(batch_size)
-        print ("Testing Accuracy:"+ sess.run(accuracy, feed_dict={x: testing_xs, y: testing_ys, keep_prob: 1.}))
-        step_test += 1
+
+    print ("Testing Accuracy:"+ sess.run(accuracy, feed_dict={x: valid_imgs, y: valid_labels, keep_prob: 1.}))

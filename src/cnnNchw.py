@@ -118,7 +118,7 @@ def main(_):
     train_imgs = load_pkls(save_path, 'x_train')
     train_labels = load_pkls(save_path, 'y_train')
     train = tf.train.slice_input_producer([train_imgs, train_labels], shuffle=True)
-    image_batch, label_batch = tf.train.batch(train, batch_size=100)
+    image_batch, label_batch = tf.train.batch(train, batch_size=50)
     valid_imgs =  load_pkls(save_path, 'x_valid')
     valid_labels =  load_pkls(save_path, 'y_valid')
     #valid = tf.train.slice_input_producer([valid_imgs,valid_labels],shuffle=True)
@@ -166,7 +166,7 @@ def main(_):
         coord = tf.train.Coordinator()
         thread = tf.train.start_queue_runners(sess, coord)
 
-        for i in range(4450): #训练图片的数量
+        for i in range(8900): #训练图片的数量
             #手动batch
             '''
             this_imgs = train_imgs[:50]

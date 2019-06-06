@@ -2,11 +2,12 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import sys
+sys.path.append('..')
 from models.utils import *
 import inference
 
-
-save_path = '../../data/preprocessed_data/mnist_100'
+save_path = '../data/preprocessed_data/mnist_100'
 train_imgs = load_pkls(save_path, 'x_train')
 train_labels = load_pkls(save_path, 'y_train')
 train = tf.train.slice_input_producer([train_imgs, train_labels], shuffle=True)

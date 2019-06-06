@@ -2,8 +2,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import inference
 from models.utils import *
+import inference
 
 
 save_path = '../../data/preprocessed_data/mnist_100'

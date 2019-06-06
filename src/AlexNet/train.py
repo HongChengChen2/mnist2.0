@@ -7,7 +7,6 @@ sys.path.append('..')
 from models.utils import *
 import inference
 
-print(sys.path)
 save_path = '../../data/preprocessed_data/mnist_100'
 train_imgs = load_pkls(save_path, 'x_train')
 train_labels = load_pkls(save_path, 'y_train')

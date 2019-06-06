@@ -54,8 +54,8 @@ def alex_net(_X, _dropout, n_classes, imagesize, img_channel):
 
     # Convolution Layer
     conv2 = conv2d('conv2', norm1, _weights['wc2'], _biases['bc2'])
-    # Max Pooling (down-sampling)
-    pool2 = max_pool('pool2', conv2, k=3, s=2)
+    # Max Pooling (down-sampling) k=3 因为图片太小而被改成1
+    pool2 = max_pool('pool2', conv2, k=1, s=2)
     # Apply Normalization
     norm2 = norm('norm2', pool2, lsize=4)
     # Apply Dropout
